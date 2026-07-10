@@ -45,3 +45,4 @@ Courses built from research embed a sources list and the verified version ("cove
 
 - Courses are fully self-contained (inline CSS/JS/SVG). Chart.js is used from a CDN only when a real chart adds value; everything else works offline.
 - Every generated course is verified before delivery: the JavaScript is syntax-checked and the quiz scoring logic is executed in a test run.
+# teach-me
