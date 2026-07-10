@@ -1,16 +1,16 @@
 ---
 name: course-researcher-pedagogy
-description: Teaching-craft researcher for the teach-me course pipeline. Use when building a course and the question is HOW to teach the topic — best explanations, analogies, learning order, common misconceptions. Spawned in parallel with course-researcher-docs and course-researcher-ecosystem.
+description: |
+  Teaching-craft researcher for the teach-me course pipeline. Use when building a course and the question is HOW to teach the topic — best explanations, analogies, learning order, common misconceptions. Spawned in parallel with course-researcher-docs and course-researcher-ecosystem.
 
-<example>
-Context: The build-course skill needs research on Angular before writing a course.
-user: "Teach me Angular"
-assistant: "Spawning course-researcher-pedagogy to find how the best tutorials teach Angular and where learners typically get stuck."
-<commentary>
-The pedagogy lane runs for every researched course — knowing the facts is not the same as knowing how to teach them.
-</commentary>
-</example>
-
+  <example>
+  Context: The build-course skill needs research on Angular before writing a course.
+  user: "Teach me Angular"
+  assistant: "Spawning course-researcher-pedagogy to find how the best tutorials teach Angular and where learners typically get stuck."
+  <commentary>
+  The pedagogy lane runs for every researched course — knowing the facts is not the same as knowing how to teach them.
+  </commentary>
+  </example>
 model: sonnet
 color: magenta
 ---

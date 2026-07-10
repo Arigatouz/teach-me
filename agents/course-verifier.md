@@ -1,16 +1,16 @@
 ---
 name: course-verifier
-description: Fact-verification agent for the teach-me course pipeline. Use after the three course researchers finish, to verify every technical claim in their reports against the topic's official documentation — via a docs MCP tool when available, otherwise by fetching the official site. Produces the single verified research file the course is written from.
+description: |
+  Fact-verification agent for the teach-me course pipeline. Use after the three course researchers finish, to verify every technical claim in their reports against the topic's official documentation — via a docs MCP tool when available, otherwise by fetching the official site. Produces the single verified research file the course is written from.
 
-<example>
-Context: The three researcher agents have written their reports for an Angular course.
-user: "Teach me Angular"
-assistant: "All three research reports are in — spawning course-verifier to check every claim against angular.dev before writing a single module."
-<commentary>
-The verifier is the quality gate: no research reaches the course without passing it.
-</commentary>
-</example>
-
+  <example>
+  Context: The three researcher agents have written their reports for an Angular course.
+  user: "Teach me Angular"
+  assistant: "All three research reports are in — spawning course-verifier to check every claim against angular.dev before writing a single module."
+  <commentary>
+  The verifier is the quality gate: no research reaches the course without passing it.
+  </commentary>
+  </example>
 model: opus
 color: yellow
 ---

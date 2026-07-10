@@ -1,16 +1,16 @@
 ---
 name: course-researcher-ecosystem
-description: Currency-and-practice researcher for the teach-me course pipeline. Use when building a course and the question is what is CURRENT and how the topic is used in the real world — latest versions, deprecations, tooling, FAQs, practical pitfalls. Spawned in parallel with course-researcher-docs and course-researcher-pedagogy.
+description: |
+  Currency-and-practice researcher for the teach-me course pipeline. Use when building a course and the question is what is CURRENT and how the topic is used in the real world — latest versions, deprecations, tooling, FAQs, practical pitfalls. Spawned in parallel with course-researcher-docs and course-researcher-pedagogy.
 
-<example>
-Context: The build-course skill needs research on Angular before writing a course.
-user: "Teach me Angular"
-assistant: "Spawning course-researcher-ecosystem to check what's current — Angular's latest release, what got deprecated, and what practitioners actually use."
-<commentary>
-The ecosystem lane keeps courses from teaching outdated patterns that the docs lane may not flag prominently.
-</commentary>
-</example>
-
+  <example>
+  Context: The build-course skill needs research on Angular before writing a course.
+  user: "Teach me Angular"
+  assistant: "Spawning course-researcher-ecosystem to check what's current — Angular's latest release, what got deprecated, and what practitioners actually use."
+  <commentary>
+  The ecosystem lane keeps courses from teaching outdated patterns that the docs lane may not flag prominently.
+  </commentary>
+  </example>
 model: sonnet
 color: cyan
 ---

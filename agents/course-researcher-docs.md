@@ -1,16 +1,16 @@
 ---
 name: course-researcher-docs
-description: Primary-source researcher for the teach-me course pipeline. Use when building a course and factual, authoritative material is needed from official documentation only. Spawned in parallel with course-researcher-pedagogy and course-researcher-ecosystem.
+description: |
+  Primary-source researcher for the teach-me course pipeline. Use when building a course and factual, authoritative material is needed from official documentation only. Spawned in parallel with course-researcher-pedagogy and course-researcher-ecosystem.
 
-<example>
-Context: The build-course skill needs research on Angular before writing a course.
-user: "Teach me Angular"
-assistant: "I'll spawn the three course researchers in parallel, starting with course-researcher-docs to mine angular.dev."
-<commentary>
-Course construction on a documented technology triggers the docs lane of the research pipeline.
-</commentary>
-</example>
-
+  <example>
+  Context: The build-course skill needs research on Angular before writing a course.
+  user: "Teach me Angular"
+  assistant: "I'll spawn the three course researchers in parallel, starting with course-researcher-docs to mine angular.dev."
+  <commentary>
+  Course construction on a documented technology triggers the docs lane of the research pipeline.
+  </commentary>
+  </example>
 model: sonnet
 color: blue
 ---
