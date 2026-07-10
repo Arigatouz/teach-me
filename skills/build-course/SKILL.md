@@ -1,6 +1,6 @@
 ---
 name: build-course
-description: Build a complete interactive HTML course on any topic — curriculum, lessons, interactive drawings per module, mid-module quick checks, and an auto-scored final quiz with evaluation. Use whenever the user wants to learn or be taught something substantial, even if they never say "course" — "teach me X", "help me learn X", "explain X properly", "I want to understand X", "build a course/curriculum/lesson on X", "make study material for X", or any request for educational content as HTML.
+description: Build a complete interactive HTML course on any topic — curriculum, lessons, interactive drawings per module, mid-module quick checks, and an auto-scored final quiz with evaluation. Use whenever the user wants to learn or be taught something substantial, even if they never say "course" — "teach me X", "help me learn X", "explain X properly", "I want to understand X", "build a course/curriculum/lesson on X", "make study material for X", or any request for educational content as HTML. Do not use for a quick factual answer with no course requested, for reviewing or editing an existing course file, or for non-HTML educational content like a blog post or slide deck — use a content or review skill for those.
 ---
 
 # Build Course
@@ -17,13 +17,13 @@ Determine from the request; ask via AskUserQuestion only for what's genuinely un
 - **Learner level** — beginner / intermediate / advanced
 - **Course size** — quick lesson (1 module, ~30 min) / standard (4–8 modules) / deep curriculum (10+ modules). Default: standard.
 - **Language** — match the user's language unless told otherwise
-- **Research engine** — only if a deep-research skill is installed AND the topic needs full research: ask whether to use that skill or this plugin's research swarm (see `references/research-pipeline.md`). Include it as one question in this same round, never a second round.
+- **Research approach** — whenever the course needs the full pipeline (standard or deep course, see `references/research-pipeline.md`): always ask, in this same round, how to research it — the plugin's research swarm (default) or the user's deep-research skill if one is installed. Never skip this question and never decide it yourself.
 
-One round of questions maximum. Sensible defaults beat interrogation.
+One round of questions maximum, and AskUserQuestion caps at 4 questions per round. If more than 4 of the above are genuinely unknown, ask topic/scope and research approach first — they change what gets built — and default the rest (learner level → intermediate, course size → standard, language → the user's message language) instead of exceeding the cap. Sensible defaults beat interrogation.
 
 ### Step 2 — Research (verified pipeline)
 
-Read `references/research-pipeline.md` and follow it. In short: if the topic is fast-changing, has official documentation, or the user wants a deep curriculum, research is mandatory BEFORE writing content. Scale it to course size — quick lessons get lightweight inline research; standard and deep courses get the full pipeline. If a deep-research skill is installed, the user chose the engine in Step 1; otherwise spawn the plugin's three researcher agents in parallel (`course-researcher-docs`, `course-researcher-pedagogy`, `course-researcher-ecosystem` — each has a deliberately different search strategy), then the `course-verifier` agent, which checks technical claims against the official docs (docs MCP first, official-site fetch otherwise). Write the course only from the verifier's output, and embed the sources list in the course home section. Skip research only for stable, timeless topics at quick-lesson depth. Never invent statistics, version numbers, or dates — verify or omit.
+Read `references/research-pipeline.md` and follow it. In short: if the topic is fast-changing, has official documentation, or the user wants a deep curriculum, research is mandatory BEFORE writing content. Scale it to course size — quick lessons get lightweight inline research; standard and deep courses get the full pipeline, using whichever engine was chosen in Step 1 (always asked, never decided by you). If the swarm was chosen or defaulted to, spawn the plugin's three researcher agents in parallel (`course-researcher-docs`, `course-researcher-pedagogy`, `course-researcher-ecosystem` — each has a deliberately different search strategy), then the `course-verifier` agent, which checks technical claims against the official docs (docs MCP first, official-site fetch otherwise). Doing this research or verification yourself instead of spawning the agents is not a substitute, no matter how confident you are in a direct tool call — run the agents. Write the course only from the verifier's output, and embed the sources list in the course home section. Skip research only for stable, timeless topics at quick-lesson depth. Never invent statistics, version numbers, or dates — verify or omit.
 
 ### Step 3 — Design the curriculum
 
@@ -86,3 +86,4 @@ Present the file with a one-paragraph summary: module count, visual count, quiz 
 - Every widget in its own IIFE with unique id prefix (`w1`, `w2`, …).
 - Accessible: semantic headings, radio groups inside `<fieldset>`/`<legend>` (the engine does this), `aria-label` on controls, contrast ≥ 4.5:1.
 - Quiz answers: 2+ per module, all three types represented, every question has `explain`. Fill-in answers list all reasonable phrasings.
+- The research engine (Step 1) is always asked, never silently decided — and whatever gets chosen is executed exactly as documented, not swapped for your own direct research.

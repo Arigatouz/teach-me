@@ -28,7 +28,7 @@ Claude will ask a couple of quick questions (level, course size), research the t
 
 ## Agents (research pipeline)
 
-When a topic needs research, the skill prefers a deep-research skill if one is installed; otherwise it runs a four-agent pipeline:
+When a topic needs research, the skill always asks how to research it — a deep-research skill if one is installed, or its own four-agent pipeline:
 
 | Agent | Model | Strategy |
 |-------|-------|----------|

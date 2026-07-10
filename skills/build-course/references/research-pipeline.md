@@ -16,18 +16,19 @@ Four agents for a 30-minute lesson is overkill; no research for a 12-module curr
 | Standard course (4–8 modules) | Full pipeline (Path A or B below) |
 | Deep curriculum (10+ modules) | Full pipeline; consider splitting the docs lane's scope across the curriculum's halves if the topic is very large |
 
-## Choosing the research engine — ask the user
+## Choosing the research engine — always ask
 
 Check the available skills list for a deep-research capability: names like `deep-research`, `research`, or similar multi-source research skills.
 
-- **No such skill installed** → use Path B (the research swarm) without asking. Don't offer a choice that doesn't exist.
-- **One exists AND the full pipeline is warranted** → let the user pick. Fold this into the Step 1 clarification round (one AskUserQuestion total, this as one of its questions):
+Whenever the full pipeline is warranted (see table above), ask this every time as one question in the Step 1 clarification round (one AskUserQuestion total, this as one of its questions) — regardless of whether a deep-research skill is installed:
 
 > "How should I research this topic?"
 > 1. **Research swarm (Recommended)** — this plugin's 3 specialized researchers + a verifier that checks every claim against the official docs
 > 2. **Your deep-research skill** — uses `<detected skill name>`; often faster, and its output still gets gated before use
 
-Default on skip: the swarm — it is purpose-built for courses and verification is integral to it. Honor the user's choice for the rest of the session unless they say otherwise.
+Omit option 2 if no such skill is installed — but still ask. Default on skip: the swarm — it is purpose-built for courses and verification is integral to it. Honor the user's choice for the rest of the session unless they say otherwise.
+
+Whatever gets chosen, execute it exactly as documented below (Path A or Path B). Doing the research or verification yourself instead — via a documentation MCP tool, web fetch, or built-in knowledge — is not a substitute, no matter how confident you are that it's equally reliable. The only exception is the quick-lesson lightweight mode in the table above; it does not extend to standard or deep courses.
 
 ## Path A — deep-research skill (when the user picks it)
 
@@ -107,4 +108,6 @@ List official sources first, from the verifier's "Sources for the course HTML" s
 
 - A researcher returns thin/empty results → proceed with the other two lanes; note the gap in the curriculum plan shown to the user.
 - Verifier marks many claims UNVERIFIED → narrow the course scope to what survived, and tell the user what was cut and why.
+- The chosen engine (Path A or Path B) errors out mid-run → fall back to the other path once, telling the user you're switching and why. If that also fails, drop to the next rule below.
+- The Agent/Task tool is unavailable in this environment (so Path B's agents cannot be spawned at all) and no deep-research skill is installed either → do the lightweight inline research described in the quick-lesson row above, even for a standard/deep course, and tell the user plainly this is a degraded fallback, not the full pipeline.
 - No web access at all → fall back to built-in knowledge, cap the course at fundamentals, and label it clearly as unverified against current docs.
