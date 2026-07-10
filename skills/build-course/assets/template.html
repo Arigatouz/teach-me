@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{COURSE_TITLE}}</title>
+<style>
+:root {
+  --ink: #1a1a2e; --ink-soft: #55556d; --ink-faint: #8a8aa3;
+  --paper: #fafaf7; --card: #ffffff; --line: #e4e4ea;
+  --accent: #4f46e5; --accent-soft: #eef2ff;
+  --good: #16803c; --good-bg: #ecfdf3;
+  --warn: #b45309; --warn-bg: #fffbeb;
+  --bad: #b91c1c; --bad-bg: #fef2f2;
+  --radius: 10px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; margin: 0; }
+body { font: 16.5px/1.7 var(--font); color: var(--ink); background: var(--paper); }
+h1 { font-size: 30px; font-weight: 600; margin-bottom: 12px; }
+h2 { font-size: 22px; font-weight: 600; margin: 18px 0 12px; }
+h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 0 0 12px 22px; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 250px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; padding: 20px 14px; border-right: 1px solid var(--line); background: var(--card); }
+main { flex: 1; padding: 48px min(6vw, 72px) 80px; max-width: 860px; }
+.course-badge { font-weight: 600; font-size: 15px; margin-bottom: 10px; }
+.nav-link { display: block; padding: 8px 10px; border-radius: 8px; color: var(--ink-soft);
+  text-decoration: none; font-size: 14px; margin-bottom: 2px; }
+.nav-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.nav-link.done .nav-num { background: var(--good); color: #fff; }
+.nav-num { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
+  border-radius: 50%; background: var(--line); font-size: 11px; margin-right: 6px; }
+.progress-wrap { margin-bottom: 14px; }
+.progress-bar { height: 6px; background: var(--line); border-radius: 3px; margin: 8px 0 4px; }
+#progressFill { height: 100%; width: 0%; background: var(--accent); border-radius: 3px; transition: width .3s; }
+#progressLabel { font-size: 12px; color: var(--ink-faint); }
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.lede { font-size: 18px; color: var(--ink-soft); margin-bottom: 24px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 24px; margin-bottom: 16px; }
+.callout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0;
+  padding: 14px 18px; margin: 16px 0; }
+.callout.good { background: var(--good-bg); border-left-color: var(--good); }
+.callout.warn { background: var(--warn-bg); border-left-color: var(--warn); }
+.callout.bad { background: var(--bad-bg); border-left-color: var(--bad); }
+.pill { display: inline-block; background: var(--accent-soft); color: var(--accent);
+  border-radius: 999px; padding: 2px 12px; font-size: 12.5px; font-weight: 600; margin-bottom: 8px; }
+.btn { background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 10px 18px; font: 600 14px var(--font); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.btn:disabled { opacity: .55; cursor: default; }
+.code { font: 14px/1.6 var(--mono); background: #0f172a; color: #e2e8f0; border-radius: var(--radius);
+  padding: 16px 20px; overflow-x: auto; margin: 16px 0; }
+.viz { margin: 28px 0; text-align: center; }
+.viz svg { max-width: 100%; height: auto; }
+.viz figcaption { font-size: 13px; color: var(--ink-faint); margin-top: 8px; }
+.widget { text-align: left; }
+.widget input[type=range] { width: 100%; margin: 10px 0; accent-color: var(--accent); }
+.widget-read { font-size: 15px; color: var(--ink-soft); margin-top: 8px; }
+.widget-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.quickcheck { background: var(--warn-bg); border: 1px solid #f2e2c4; border-radius: var(--radius);
+  padding: 16px 20px; margin: 20px 0; }
+.qc-opt { display: inline-block; background: var(--card); border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 14px; margin: 4px 6px 4px 0; font: 14.5px var(--font); cursor: pointer; }
+.qc-opt:hover { border-color: var(--accent); }
+.qc-opt.qc-right { border-color: var(--good); background: var(--good-bg); }
+.qc-opt.qc-wrong { border-color: var(--bad); background: var(--bad-bg); }
+.qc-fb { margin-top: 10px; font-size: 14.5px; }
+fieldset.quiz-q { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 24px 24px; margin-bottom: 16px; }
+fieldset.quiz-q legend { font-weight: 600; padding: 0 8px; }
+.quiz-opt { display: block; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px;
+  margin: 6px 0; cursor: pointer; }
+.quiz-opt:hover { border-color: var(--accent); }
+.quiz-fill { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px;
+  font: inherit; width: min(320px, 100%); }
+.q-right { border-color: var(--good); }
+.q-wrong { border-color: var(--bad); }
+.quiz-feedback { margin-top: 10px; padding: 10px 14px; border-radius: 8px;
+  background: var(--accent-soft); font-size: 14.5px; }
+.quiz-best { font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; }
+.foot { color: var(--ink-faint); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (max-width: 720px) {
+  .layout { flex-direction: column; }
+  .sidebar { position: static; width: 100%; height: auto; display: flex; flex-wrap: wrap; gap: 4px; }
+  .progress-wrap { width: 100%; }
+}
+@media print { .sidebar, .btn { display: none } main { padding: 0 } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar" aria-label="Course navigation">
+    <div class="course-badge">{{SHORT_TITLE}}</div>
+    <div class="progress-wrap" aria-hidden="true">
+      <div class="progress-bar"><div id="progressFill"></div></div>
+      <span id="progressLabel">0% complete</span>
+    </div>
+    <a href="#home" class="nav-link active" data-nav="home">Overview</a>
+    {{NAV_LINKS}}
+    <a href="#quiz" class="nav-link" data-nav="quiz">Final quiz</a>
+  </nav>
+  <main>
+    <section id="home">
+      {{HOME_SECTION}}
+    </section>
+
+    {{MODULE_SECTIONS}}
+
+    <section id="quiz">
+      <h2>Final quiz</h2>
+      <p>{{QUIZ_COUNT_LINE}}</p>
+      <p class="quiz-best" id="quizBest" hidden></p>
+      <div id="quizRoot"></div>
+    </section>
+
+    <footer class="foot">Built with the Teach Me plugin · your progress is saved in this browser</footer>
+  </main>
+</div>
+<script>
+var store = (function () {
+  var key = 'teachme:' + document.title;
+  function load() {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+  }
+  function save(patch) {
+    try {
+      var d = load();
+      Object.keys(patch).forEach(function (k) { d[k] = patch[k]; });
+      localStorage.setItem(key, JSON.stringify(d));
+    } catch (e) {}
+  }
+  return { load: load, save: save };
+})();
+
+(function () {
+  var total = document.querySelectorAll('section.module').length;
+  var done = store.load().done || {};
+
+  function refresh() {
+    var n = Object.keys(done).length;
+    var pct = total ? Math.round(100 * n / total) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = pct + '% complete';
+  }
+
+  function applyDone(btn) {
+    var id = btn.getAttribute('data-module');
+    btn.textContent = 'Completed ✓';
+    btn.disabled = true;
+    var link = document.querySelector('.nav-link[data-nav="' + id + '"]');
+    if (link) link.classList.add('done');
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.mark-done'), function (btn) {
+    if (done[btn.getAttribute('data-module')]) applyDone(btn);
+    btn.addEventListener('click', function () {
+      done[btn.getAttribute('data-module')] = true;
+      store.save({ done: done });
+      applyDone(btn);
+      refresh();
+    });
+  });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  function setActive(id) {
+    links.forEach(function (l) {
+      l.classList.toggle('active', l.getAttribute('data-nav') === id);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    Array.prototype.forEach.call(document.querySelectorAll('main section[id]'), function (s) {
+      io.observe(s);
+    });
+  }
+  links.forEach(function (l) {
+    l.addEventListener('click', function () { setActive(l.getAttribute('data-nav')); });
+  });
+  refresh();
+})();
+
+/* QUIZ-CORE-START */
+var QUIZ_QUESTIONS = [
+{{QUIZ_QUESTIONS}}
+];
+
+var QUICK_CHECKS = {
+{{QUICK_CHECKS}}
+};
+
+function normalizeFill(s) {
+  return String(s).toLowerCase()
+    .replace(/[.,;:!?'"`()]/g, '')
+    .replace(/\s+/g, ' ').trim()
+    .replace(/^(the|a|an) /, '');
+}
+
+function isCorrect(q, given) {
+  if (given === null || given === undefined || given === '') return false;
+  if (q.type === 'mc') return Number(given) === q.answer;
+  if (q.type === 'tf') return (given === true || given === 'true') === q.answer;
+  if (q.type === 'fill') {
+    var g = normalizeFill(given);
+    return q.answer.some(function (a) { return normalizeFill(a) === g; });
+  }
+  return false;
+}
+
+function scoreQuiz(questions, answers) {
+  var result = { total: questions.length, correct: 0, byTopic: {}, details: [] };
+  questions.forEach(function (q, i) {
+    var ok = isCorrect(q, answers[i]);
+    if (ok) result.correct++;
+    if (!result.byTopic[q.topic]) {
+      result.byTopic[q.topic] = { name: q.topicName, correct: 0, total: 0 };
+    }
+    result.byTopic[q.topic].total++;
+    if (ok) result.byTopic[q.topic].correct++;
+    result.details.push({ index: i, ok: ok, given: answers[i] });
+  });
+  result.pct = result.total ? Math.round(100 * result.correct / result.total) : 0;
+  return result;
+}
+
+function quizVerdict(pct) {
+  if (pct >= 90) return { label: 'Excellent', cls: 'good', msg: 'You have mastered this material.' };
+  if (pct >= 70) return { label: 'Good', cls: 'good', msg: 'Solid understanding — review the topics below to reach mastery.' };
+  if (pct >= 50) return { label: 'Getting there', cls: 'warn', msg: 'You have the basics. Revisit the weaker modules before moving on.' };
+  return { label: 'Needs review', cls: 'bad', msg: 'Work back through the modules below, then retake the quiz.' };
+}
+
+function shuffled(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function prepareQuiz(questions) {
+  return shuffled(questions).map(function (q) {
+    if (q.type !== 'mc') return q;
+    var order = shuffled(q.options.map(function (_, i) { return i; }));
+    return {
+      type: q.type, topic: q.topic, topicName: q.topicName, q: q.q, explain: q.explain,
+      options: order.map(function (i) { return q.options[i]; }),
+      answer: order.indexOf(q.answer)
+    };
+  });
+}
+/* QUIZ-CORE-END */
+
+function renderQuiz(rootId, questions) {
+  var root = document.getElementById(rootId);
+  var html = '';
+  questions.forEach(function (q, i) {
+    if (q.type === 'fill') {
+      html += '<div class="quiz-q card" data-qi="' + i + '">';
+      html += '<p><strong>Q' + (i + 1) + '.</strong> ' + q.q + '</p>';
+      html += '<input class="quiz-fill" type="text" aria-label="Your answer to question ' + (i + 1) + '" placeholder="Type your answer">';
+    } else {
+      html += '<fieldset class="quiz-q" data-qi="' + i + '">';
+      html += '<legend>Q' + (i + 1) + '. ' + q.q + '</legend>';
+      var opts = q.type === 'mc' ? q.options : ['True', 'False'];
+      opts.forEach(function (opt, oi) {
+        var val = q.type === 'mc' ? oi : (oi === 0 ? 'true' : 'false');
+        html += '<label class="quiz-opt"><input type="radio" name="q' + i + '" value="' + val + '"> ' + opt + '</label>';
+      });
+    }
+    html += '<div class="quiz-feedback" hidden></div>';
+    html += q.type === 'fill' ? '</div>' : '</fieldset>';
+  });
+  html += '<button class="btn" id="quizSubmit">Submit answers</button>';
+  html += '<div id="quizResult" hidden></div>';
+  root.innerHTML = html;
+
+  document.getElementById('quizSubmit').addEventListener('click', function () {
+    var answers = questions.map(function (q, i) {
+      var box = root.querySelector('[data-qi="' + i + '"]');
+      if (q.type === 'fill') return box.querySelector('.quiz-fill').value;
+      var checked = box.querySelector('input:checked');
+      if (!checked) return null;
+      return q.type === 'tf' ? checked.value : Number(checked.value);
+    });
+    var r = scoreQuiz(questions, answers);
+    questions.forEach(function (q, i) {
+      var box = root.querySelector('[data-qi="' + i + '"]');
+      var fb = box.querySelector('.quiz-feedback');
+      var ok = r.details[i].ok;
+      box.classList.add(ok ? 'q-right' : 'q-wrong');
+      var correctText = q.type === 'mc' ? q.options[q.answer]
+        : q.type === 'tf' ? (q.answer ? 'True' : 'False') : q.answer[0];
+      fb.innerHTML = (ok ? '<strong>Correct.</strong> ' :
+        '<strong>Not quite.</strong> Correct answer: <em>' + correctText + '</em>. ') + q.explain;
+      fb.hidden = false;
+    });
+    var best = store.load().best || 0;
+    if (r.pct > best) { best = r.pct; store.save({ best: best }); }
+    showBest();
+    var v = quizVerdict(r.pct);
+    var out = '<div class="callout ' + v.cls + '"><h3>' + v.label + ' — ' + r.correct + '/' + r.total +
+      ' (' + r.pct + '%)</h3><p>' + v.msg + '</p><ul>';
+    Object.keys(r.byTopic).forEach(function (t) {
+      var bt = r.byTopic[t];
+      var tip = bt.correct === bt.total ? 'mastered' :
+        'review <a href="#' + t + '">' + bt.name + '</a>';
+      out += '<li>' + bt.name + ': ' + bt.correct + '/' + bt.total + ' — ' + tip + '</li>';
+    });
+    out += '</ul><button class="btn ghost" id="quizRetake">Retake quiz (new order)</button></div>';
+    var res = document.getElementById('quizResult');
+    res.innerHTML = out;
+    res.hidden = false;
+    document.getElementById('quizRetake').addEventListener('click', startQuiz);
+    if (res.scrollIntoView) res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+}
+
+function showBest() {
+  var best = store.load().best;
+  var el = document.getElementById('quizBest');
+  if (best !== undefined && el) {
+    el.textContent = 'Your best score so far: ' + best + '%';
+    el.hidden = false;
+  }
+}
+
+function startQuiz() {
+  renderQuiz('quizRoot', prepareQuiz(QUIZ_QUESTIONS));
+}
+
+(function () {
+  Array.prototype.forEach.call(document.querySelectorAll('.quickcheck'), function (el) {
+    var q = QUICK_CHECKS[el.id];
+    if (!q) return;
+    var html = '<p><strong>Quick check:</strong> ' + q.q + '</p>';
+    var opts = q.type === 'tf' ? ['True', 'False'] : q.options;
+    opts.forEach(function (o, i) {
+      html += '<button type="button" class="qc-opt" data-i="' + i + '">' + o + '</button>';
+    });
+    html += '<div class="qc-fb" hidden></div>';
+    el.innerHTML = html;
+    var correct = q.type === 'tf' ? (q.answer ? 0 : 1) : q.answer;
+    el.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('.qc-opt') : null;
+      if (!b) return;
+      var ok = Number(b.getAttribute('data-i')) === correct;
+      b.classList.add(ok ? 'qc-right' : 'qc-wrong');
+      var fb = el.querySelector('.qc-fb');
+      fb.innerHTML = (ok ? '<strong>Right.</strong> ' : '<strong>Not quite.</strong> ') + q.explain;
+      fb.hidden = false;
+    });
+  });
+})();
+
+showBest();
+startQuiz();
+</script>
+{{WIDGET_SCRIPTS}}
+</body>
+</html>
