@@ -40,7 +40,7 @@ Audience level: <from task prompt>
 <numbered module sequence with one-line rationale each>
 
 ## Misconception map
-<misconception → why learners believe it → the corrective framing; these become quick checks>
+<misconception → why learners believe it → the corrective framing; these become quick checks and each module's misconception callout>
 
 ## Analogy and visualization bank
 <per key concept: an analogy that works + an idea for the module's interactive drawing (what parameter to put on a slider, what sequence to step through, what cases to toggle)>

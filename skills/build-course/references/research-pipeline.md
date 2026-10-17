@@ -48,7 +48,7 @@ Then gate the output: if the report's technical claims cite official documentati
 
 ### 1. Set up the workspace
 
-Create `research/` next to the course output file. Reports:
+Create `research/` inside the course source folder (`<topic-slug>-course/research/`, see SKILL.md Step 4) so each course keeps its own reports; build.js ignores the folder. Reports:
 
 - `research/docs.md` — official documentation lane
 - `research/pedagogy.md` — teaching craft lane
@@ -57,7 +57,7 @@ Create `research/` next to the course output file. Reports:
 
 ### 2. Spawn the three researchers IN PARALLEL — one turn, three Agent calls
 
-Use the plugin's agent types `course-researcher-docs`, `course-researcher-pedagogy`, `course-researcher-ecosystem`. If plugin agent types are unavailable in this environment, spawn `general-purpose` agents and paste the corresponding `agents/course-researcher-*.md` body into the prompt instead — the strategy separation is what matters, not the agent name.
+Use the plugin's agent types `course-researcher-docs`, `course-researcher-pedagogy`, `course-researcher-ecosystem`. If plugin agent types are unavailable in this environment, spawn `general-purpose` agents and paste the corresponding `course-researcher-*.md` body into the prompt instead — those files live in the plugin's `agents/` folder, two levels above this skill's directory. The strategy separation is what matters, not the agent name.
 
 Task prompt template (fill per lane):
 
@@ -92,7 +92,7 @@ Docs MCP tools that may be available to you: <list any doc-serving MCP tools you
 
 ## Sources section in the course HTML
 
-When the pipeline ran, append a collapsible sources block at the end of the `{{HOME_SECTION}}` content (no template change needed):
+When the pipeline ran, end `home.html` with a collapsible sources block:
 
 ```html
 <details class="card"><summary><strong>Sources</strong> — verified against <official domain>, <date></summary>
