@@ -1,0 +1,51 @@
+<span class="pill">Module 1 · 10 min</span>
+<h2>Labels that work</h2>
+<div class="callout"><strong>Why this matters:</strong> a field without a label is a guessing game for screen-reader users and a smaller click target for everyone else.</div>
+<p>A <code>&lt;label&gt;</code> names a form control. Connect the two by giving the label a <code>for</code> attribute that matches the control's <code>id</code>:</p>
+<pre class="code">&lt;label for="email"&gt;Email&lt;/label&gt;
+&lt;input id="email" type="email"&gt;</pre>
+<figure class="viz">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 120" role="img" aria-label="A label pointing at its input">
+    <defs><marker id="m1Arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#4f46e5"/></marker></defs>
+    <g font-family="system-ui" font-size="14" text-anchor="middle">
+      <rect x="40" y="35" width="180" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="130" y="65" fill="#1a1a2e">label for="email"</text>
+      <rect x="420" y="35" width="180" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="510" y="65" fill="#1a1a2e">input id="email"</text>
+      <line x1="220" y1="60" x2="414" y2="60" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#m1Arrow)"/>
+    </g>
+  </svg>
+  <figcaption>The label's <code>for</code> value must equal the input's <code>id</code>.</figcaption>
+</figure>
+<p>A connected label is also clickable: pressing it focuses the control, so the effective target grows.</p>
+<div class="widget card" role="group" aria-label="Target size explorer">
+  <label for="w1Size">Control height: <strong id="w1SizeOut">32px</strong></label>
+  <input type="range" id="w1Size" min="12" max="48" value="32" step="2">
+  <svg viewBox="0 0 640 80" id="w1Box" aria-hidden="true"></svg>
+  <p class="widget-read" id="w1Read"></p>
+</div>
+<div class="quickcheck" id="qc1"></div>
+<div class="callout warn"><strong>Common mistake:</strong> using <code>placeholder</code> as the label. It disappears as soon as someone starts typing.</div>
+<div class="callout good"><strong>Key takeaways</strong>
+  <ul>
+    <li>Every control needs a visible label.</li>
+    <li>The label's <code>for</code> must equal the control's <code>id</code>.</li>
+    <li>Clicking a connected label focuses its control.</li>
+  </ul>
+</div>
+<script>
+(function () {
+  var size = document.getElementById('w1Size');
+  function draw() {
+    var h = Number(size.value);
+    document.getElementById('w1SizeOut').textContent = h + 'px';
+    document.getElementById('w1Box').innerHTML =
+      '<rect x="20" y="' + (40 - h / 2) + '" width="300" height="' + h + '" rx="6" fill="#eef2ff" stroke="#4f46e5"/>';
+    document.getElementById('w1Read').textContent = h >= 24
+      ? 'At ' + h + 'px the control meets the 24px minimum target size.'
+      : 'At ' + h + 'px the control is below the 24px minimum target size.';
+  }
+  size.addEventListener('input', draw);
+  draw();
+})();
+</script>

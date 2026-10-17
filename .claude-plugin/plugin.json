@@ -1,7 +1,7 @@
 {
   "name": "teach-me",
-  "version": "0.5.4",
-  "description": "Turns any topic into a beautifully designed, self-contained HTML course: verified multi-agent research (3 researchers + a fact-verifier checking official docs), structured curriculum, interactive drawings in every module, quick checks, and an auto-scored final quiz with evaluation.",
+  "version": "0.6.0",
+  "description": "Turns any topic into a beautifully designed, self-contained HTML course in any language: verified multi-agent research (3 researchers + a fact-verifier checking official docs), structured curriculum, interactive drawings in every module, quick checks, and an auto-scored final quiz with evaluation — built from small source files and verified in a real browser.",
   "author": {
     "name": "AliG"
   },
@@ -14,6 +14,8 @@
     "learning",
     "interactive",
     "research",
-    "verified"
+    "verified",
+    "multilingual",
+    "rtl"
   ]
 }

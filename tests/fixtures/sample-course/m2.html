@@ -1,0 +1,63 @@
+<span class="pill">Module 2 · 12 min</span>
+<h2>Built-in validation</h2>
+<div class="callout"><strong>Why this matters:</strong> the browser can reject bad input before any of your code runs.</div>
+<p>Add constraints as attributes, and the browser checks them when the form is submitted:</p>
+<pre class="code">&lt;input id="email" type="email" required&gt;</pre>
+<p>Frameworks build on the same attributes — an Angular template binds the field with <code>{{ email }}</code> and still relies on <code>required</code>.</p>
+<div class="widget card" role="group" aria-label="What happens on submit">
+  <div id="w2Stage"></div>
+  <div class="widget-controls">
+    <button type="button" class="btn ghost" id="w2Prev" aria-label="Previous step">‹ Back</button>
+    <span class="widget-label" id="w2Label"></span>
+    <button type="button" class="btn" id="w2Next" aria-label="Next step">Next ›</button>
+  </div>
+</div>
+<div class="quickcheck" id="qc2"></div>
+<figure class="viz">
+  <canvas id="w3Chart" height="200" role="img" aria-label="Chart: constraint attributes per input type"></canvas>
+  <p class="chart-fallback" id="w3Fallback" hidden>This chart needs an internet connection the first time the course is opened.</p>
+  <figcaption>Illustrative: how many constraint attributes each input type accepts.</figcaption>
+</figure>
+<div class="callout good"><strong>Key takeaways</strong>
+  <ul>
+    <li><code>required</code>, <code>type</code> and <code>pattern</code> are checked on submit.</li>
+    <li>Invalid fields stop the submission and show a message.</li>
+    <li>Always validate again on the server.</li>
+  </ul>
+</div>
+<script>
+(function () {
+  function box(label) {
+    return '<svg viewBox="0 0 640 120"><rect x="200" y="30" width="240" height="60" rx="8" fill="#eef2ff" stroke="#4f46e5"/>' +
+      '<text x="320" y="65" text-anchor="middle" font-family="system-ui" font-size="14" fill="#1a1a2e">' + label + '</text></svg>';
+  }
+  var steps = [
+    { svg: box('Submit pressed'), text: 'The user presses Submit.' },
+    { svg: box('Constraints checked'), text: 'The browser checks every constraint.' },
+    { svg: box('Message shown'), text: 'An invalid field stops the submission and shows a message.' }
+  ];
+  var i = 0;
+  function show() {
+    document.getElementById('w2Stage').innerHTML = steps[i].svg;
+    document.getElementById('w2Label').textContent = (i + 1) + '/' + steps.length + ' — ' + steps[i].text;
+    document.getElementById('w2Prev').disabled = i === 0;
+    document.getElementById('w2Next').disabled = i === steps.length - 1;
+  }
+  document.getElementById('w2Prev').addEventListener('click', function () { i--; show(); });
+  document.getElementById('w2Next').addEventListener('click', function () { i++; show(); });
+  show();
+})();
+</script>
+<script>
+(function () {
+  if (window.Chart) {
+    new Chart(document.getElementById('w3Chart'), {
+      type: 'bar',
+      data: { labels: ['text', 'email', 'number'], datasets: [{ data: [4, 5, 5], backgroundColor: '#4f46e5' }] },
+      options: { plugins: { legend: { display: false } }, responsive: true }
+    });
+  } else {
+    document.getElementById('w3Fallback').hidden = false;
+  }
+})();
+</script>
